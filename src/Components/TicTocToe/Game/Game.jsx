@@ -58,32 +58,37 @@ export const Game = (prop) => {
     setBoard(targetVersion);
   };
 
+  const history = () => {
+    return historyBoard.map((_, idx) => {
+      return (
+        <li key={`${`${idx}_index`}`}>
+          {`#${idx + 1}. `}
+          <button
+            type="button"
+            className="history__item"
+            onClick={() => handleBack(idx)}
+          >
+            {idx === 0 ? "Reset" : `Go to move #${idx}`}
+          </button>
+        </li>
+      );
+    });
+  };
+
+  const title = winner ? "The winner: " : "Next player: ";
+  const currPlayerOrWinner = winner || player;
+
   return (
     <div className={className}>
       <div className="game">
         <p>
-          {winner ? "The winner: " : "Next player: "}
-          {winner || player}
+          {title}
+          {currPlayerOrWinner}
         </p>
         <div className="board">
           <Board board={board} play={(i) => play(i)} />
         </div>
-        <ul className="history">
-          {historyBoard.map((_, idx) => {
-            return (
-              <li key={`${`${idx}_index`}`}>
-                {`#${idx + 1}. `}
-                <button
-                  type="button"
-                  className="history__item"
-                  onClick={() => handleBack(idx)}
-                >
-                  {idx === 0 ? "Reset" : `Go to move #${idx}`}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
+        <ul className="history">{history()}</ul>
       </div>
     </div>
   );
